@@ -1,0 +1,2 @@
+# SSPaypalBasic
+BasicPaypal Silverstripe Module
