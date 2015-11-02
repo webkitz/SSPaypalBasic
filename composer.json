@@ -1,0 +1,9 @@
+{
+  "name": "webkitz/SSPaypalBasic",
+  "description": "Basic Paypal Silverstripe Module",
+  "keywords": [
+    "Paypal Module"
+  ],
+  "license": "MIT",
+  "minimum-stability": "stable"
+}
