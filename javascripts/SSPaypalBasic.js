@@ -25,7 +25,7 @@ $(document).ready(function () {
         console.log("paypal.js cart is hidden")
 
     //adding item to cart
-    $(".addToCartDiv").click(addToCart)
+    $(".addToCart").click(addToCart)
 
     $("#checkOut").click(function () {
         alert("Sorry not complete yet.");

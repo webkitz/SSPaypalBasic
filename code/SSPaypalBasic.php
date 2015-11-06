@@ -24,9 +24,14 @@ class SSPaypalBasic extends DataExtension
     public static function setPaypal($payPalApi = array()){}
 
     /**
-     * @param array $cartItem | Add item to cart
+     * @param array $addCartButton | Add item to cart
+     * @return button
      */
-    public static function addCart($cartItem = array()){}
+    public static function addCartButton($cartItem = array()){
+        $cartItem = (object)$cartItem;
+        $defaultBtn = isset($cartItem->button) ? $cartItem->button : 'Add to card';
+        return "<span class='addToCart' data-code='$cartItem->code' data-price='$cartItem->price' data-name='$cartItem->name'>$defaultBtn</span>";
+    }
 
     /**
      * @param array $cartItem Remove item from cart
