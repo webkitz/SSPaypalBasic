@@ -2,7 +2,7 @@
 
 class SSPaypalBasic extends DataExtension
 {    
-    protected static $sandBox = false;
+    protected static $_sandBox = false;
     protected static $_items = array();
     protected static $payPalData = array(
         'username'  =>          '',
@@ -13,9 +13,9 @@ class SSPaypalBasic extends DataExtension
     /**
      * @param $sandbox bool sets sandbox mode
      */
-    public static function sandBoxMode()
+    public static function enableSandboxMode()
     {
-        self::$sandBox = true;
+        self::$_sandBox = true;
     }
 
     /**
@@ -37,5 +37,9 @@ class SSPaypalBasic extends DataExtension
      * @param array $cartItem | Emptyies cart
      */
     public static function emptyCart($cartItem = array()){}
+
+    function contentcontrollerInit($controller) {
+        Requirements::javascript(MODULE_SSPAYPALBASIC_DIR . '/javascripts/SSPaypalBasic.js');
+    }
 
 }
