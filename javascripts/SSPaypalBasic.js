@@ -6,6 +6,10 @@ console.log("paypal.js : loading");
 
 "use strict";
 
+if (typeof jQuery == 'undefined') {
+    throw exception("jQuery not loaded");
+}
+
 var ordering = [], $shoppingCart = null;
 
 $(document).ready(function () {
@@ -85,6 +89,6 @@ function addToCart() {
     //append to last
     $("tr:last", $shoppingCart).after(cartRow);
 
-    console.log("paypal.js click adding", data);
-    console.log("paypal.js ordering", ordering);
+    //console.log("paypal.js click adding", data);
+    //console.log("paypal.js ordering", ordering);
 }
