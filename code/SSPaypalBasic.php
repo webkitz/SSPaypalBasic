@@ -38,8 +38,9 @@ class SSPaypalBasic extends DataExtension
      */
     public static function emptyCart($cartItem = array()){}
 
-    function contentcontrollerInit($controller) {
-        Requirements::javascript(MODULE_SSPAYPALBASIC_DIR . '/javascripts/SSPaypalBasic.js');
+    public function contentcontrollerInit()
+    {
+        Requirements::javascript('SSPaypalBasic/javascripts/SSPaypalBasic.js?1');
     }
 
 }
