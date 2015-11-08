@@ -51,10 +51,10 @@ function addToCart() {
         $(".shoppingCartContainer").show();
 
     //lets get the data
-    var data = $('.item', this).data('item');
+    var data = $(this).data();
 
     //check the data
-    if (typeof data.title != "string" || typeof data.price != "string") {
+    if (typeof data.name != "string" || typeof data.price != "string") {
         console.log("data", data);
         throw new Error("Error missing data");
     }
@@ -81,7 +81,7 @@ function addToCart() {
 
     //define our cart row
     var cartRow = '<tr id="' + data.item_id + '">' +
-        '<td width="70px"><p style="color: #555">' + data.title + '</p></td>' +
+        '<td width="70px"><p style="color: #555">' + data.name + '</p></td>' +
         '<td width="20" style="padding-left: 10px;"><p style="color: #555;">1</p></td>' +
         '<td width="10" style="padding-left: 10px;"><p style="color: #555">$' + data.price + '</p></td>' +
         '<td width="10"><i data-item_id="' + data.item_id + '" class="fa fa-remove cartRemove"></i></td>' +
