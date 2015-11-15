@@ -71,12 +71,7 @@ function addToCart() {
      </tr>
      */
     //append data to order this will be moved to another function
-    /*
-     $('#item', $shoppingCartContainer).append('<p>' + data.title + '</p>');
-     $('#quantity', $shoppingCartContainer).append('<p>1</p><br/>');  //@todo count from ordering array
-     $('#price', $shoppingCartContainer).append('<p>' + data.price + '</p>');  //@todo complete total
-     $('#options', $shoppingCartContainer).append('<p><i class="fa fa-remove"></i></p>');  //@todo complete total
-     */
+    
     //Remove above soon just adding by table now
 
     //define our cart row
@@ -92,3 +87,38 @@ function addToCart() {
     //console.log("paypal.js click adding", data);
     //console.log("paypal.js ordering", ordering);
 }
+
+
+(function ($) {
+    //adding in local storage to save cart details
+    var localStorage = window.localStorage;
+
+    var remove = $.removeLocalStorage = function (key) {
+        if (localStorage) localStorage.removeItem(key);
+        return;
+    };
+
+    function allStorage () {
+        return localStorage ? localStorage : undefined;
+    }
+
+    var config = $.localStorage = function (key, value) {
+        // All Read
+        if (arguments.length === 0 ) return allStorage(key);
+
+        // Write
+        if (value !== undefined) {
+            if (localStorage) localStorage.setItem(key, value);
+        }
+
+        // Read
+        var result;
+        if (localStorage) {
+            if (localStorage[key]) result = localStorage.getItem(key);
+        }
+        return result;
+    };
+
+
+
+})(jQuery);
