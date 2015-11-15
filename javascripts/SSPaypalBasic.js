@@ -71,12 +71,7 @@ function addToCart() {
      </tr>
      */
     //append data to order this will be moved to another function
-    /*
-     $('#item', $shoppingCartContainer).append('<p>' + data.title + '</p>');
-     $('#quantity', $shoppingCartContainer).append('<p>1</p><br/>');  //@todo count from ordering array
-     $('#price', $shoppingCartContainer).append('<p>' + data.price + '</p>');  //@todo complete total
-     $('#options', $shoppingCartContainer).append('<p><i class="fa fa-remove"></i></p>');  //@todo complete total
-     */
+    
     //Remove above soon just adding by table now
 
     //define our cart row
@@ -95,6 +90,7 @@ function addToCart() {
 
 
 (function ($) {
+    //adding in local storage to save cart details
     var localStorage = window.localStorage;
 
     var remove = $.removeLocalStorage = function (key) {
