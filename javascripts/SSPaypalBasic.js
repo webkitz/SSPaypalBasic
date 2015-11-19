@@ -2,7 +2,7 @@
  * Created by Luke Hardiman on 20/09/2015.
  *
  */
-console.log("paypal.js : loading");
+console.log("paypal.js : loading ");
 
 "use strict";
 
@@ -46,6 +46,7 @@ $(document.body).on('click', '.cartRemove', function () {
 });
 
 function addToCart() {
+    console.log("addToCart clicked")
     //check if showing
     if (!$shoppingCart.is(':visible'))
         $(".shoppingCartContainer").show();
