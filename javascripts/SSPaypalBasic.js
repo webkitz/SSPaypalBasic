@@ -2,15 +2,17 @@
  * Created by Luke Hardiman on 20/09/2015.
  *
  */
-console.log("paypal.js : loading");
+console.log("paypal.js : loading ");
 
-"use strict";
+
 
 if (typeof jQuery == 'undefined') {
     throw exception("jQuery not loaded");
 }
 
-var ordering = [], $shoppingCart = null;
+var  $shoppingCart = null;
+
+var cartItems = {};
 
 $(document).ready(function () {
 
@@ -46,6 +48,7 @@ $(document.body).on('click', '.cartRemove', function () {
 });
 
 function addToCart() {
+    console.log("addToCart clicked")
     //check if showing
     if (!$shoppingCart.is(':visible'))
         $(".shoppingCartContainer").show();
@@ -59,9 +62,10 @@ function addToCart() {
         throw new Error("Error missing data");
     }
 
+    cartItems[data.name] = data;
 
-    //add data to order
-    ordering[data.item_id] = data;
+    localStorage.setItem('cartItems',JSON.stringify(cartItems));
+
     /*
      <tr>
      <td width="70px"><p style="color: #555">Dried Barberries</p></td>
@@ -89,36 +93,18 @@ function addToCart() {
 }
 
 
-(function ($) {
-    //adding in local storage to save cart details
-    var localStorage = window.localStorage;
-
-    var remove = $.removeLocalStorage = function (key) {
-        if (localStorage) localStorage.removeItem(key);
-        return;
-    };
-
-    function allStorage () {
-        return localStorage ? localStorage : undefined;
-    }
-
-    var config = $.localStorage = function (key, value) {
-        // All Read
-        if (arguments.length === 0 ) return allStorage(key);
-
-        // Write
-        if (value !== undefined) {
-            if (localStorage) localStorage.setItem(key, value);
-        }
-
-        // Read
-        var result;
-        if (localStorage) {
-            if (localStorage[key]) result = localStorage.getItem(key);
-        }
-        return result;
-    };
 
 
+/**
+ * Process Shopping Cart from Storage
+ */
+function processCart(){
+    cartItems = localStorage.getItem('cartItems');
 
-})(jQuery);
+    console.log("cartItems",cartItems)
+
+}
+//process the cart 5
+processCart();
+
+
