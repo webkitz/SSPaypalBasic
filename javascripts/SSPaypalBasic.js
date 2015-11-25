@@ -99,9 +99,16 @@ function addToCart() {
  * Process Shopping Cart from Storage
  */
 function processCart(){
-    cartItems = localStorage.getItem('cartItems');
+    var items = localStorage.getItem('cartItems');
 
-    console.log("cartItems",cartItems)
+
+
+    if (items != null && typeof items == "string")
+        cartItems = JSON.parse(items);
+        else
+        cartItems = {};
+
+    console.log("Loaded cartItems from storage",cartItems)
 
 }
 //process the cart 5
