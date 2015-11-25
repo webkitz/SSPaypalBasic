@@ -35,10 +35,14 @@ class SSPaypalBasic extends DataExtension
      * @param array $addCartButton | Add item to cart
      * @return String button
      */
-    public static function addCartButton($name = '',$price = '', $code = false, $button = 'Add to card'){
+    public static function addCartButton($name = '',$price = '', $code = false, $button = 'Add to card',$qnty = false){
 
         $code = ($code == false)?  self::cartId() : $code;
-        return "<span class='addToCart' data-code='$code' data-price='$price' data-name='$name'>$button</span>";
+
+        $qntySpan = ($qnty == true)? '<span> Qty : <input id="sslModuleQty" type="text" size="3" value="1" required type="number" min="1" /> x </span>' : '';
+
+
+        return "<span class='addToCart' data-qty='1' data-code='$code' data-price='$price' data-name='$name'>$qntySpan $button</span>";
     }
 
     /**

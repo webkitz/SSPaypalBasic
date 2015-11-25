@@ -62,7 +62,11 @@ function addToCart() {
         throw new Error("Error missing data");
     }
 
+    //check if we don't already exist
+    if (typeof cartItems[data.name] == "undefined")
     cartItems[data.name] = data;
+    else
+        cartItems[data.name].qty++;
 
     localStorage.setItem('cartItems',JSON.stringify(cartItems));
 
@@ -77,8 +81,10 @@ function addToCart() {
     //append data to order this will be moved to another function
     
     //Remove above soon just adding by table now
+    addRow(data);
 
     //define our cart row
+    /*
     var cartRow = '<tr id="' + data.item_id + '">' +
         '<td width="70px"><p style="color: #555">' + data.name + '</p></td>' +
         '<td width="20" style="padding-left: 10px;"><p style="color: #555;">1</p></td>' +
@@ -87,7 +93,7 @@ function addToCart() {
         '</tr>';
     //append to last
     $("tr:last", $shoppingCart).after(cartRow);
-
+    */
     //console.log("paypal.js click adding", data);
     //console.log("paypal.js ordering", ordering);
 }
@@ -99,10 +105,33 @@ function addToCart() {
  * Process Shopping Cart from Storage
  */
 function processCart(){
-    cartItems = localStorage.getItem('cartItems');
+    var items = localStorage.getItem('cartItems');
 
-    console.log("cartItems",cartItems)
 
+
+    if (items != null && typeof items == "string")
+        cartItems = JSON.parse(items);
+        else
+        cartItems = {};
+
+    console.log("Loaded cartItems from storage",cartItems)
+    //loop items
+    $.map(cartItems,addRow);
+}
+/**
+ * Adds a row to the shopping cart
+ * @param data
+ */
+function addRow(data){
+    console.log("addRow->data",data)
+    var cartRow = '<tr id="' + data.item_id + '">' +
+        '<td width="70px"><p style="color: #555">' + data.name + '</p></td>' +
+        '<td width="20" style="padding-left: 10px;"><p style="color: #555;">' + data.qty + '</p></td>' +
+        '<td width="10" style="padding-left: 10px;"><p style="color: #555">$' + data.price + '</p></td>' +
+        '<td width="10"><i data-item_id="' + data.item_id + '" class="fa fa-remove cartRemove"></i></td>' +
+        '</tr>';
+    //append to last
+    $("tr:last", $shoppingCart).after(cartRow);
 }
 //process the cart 5
 processCart();
