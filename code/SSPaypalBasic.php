@@ -24,7 +24,7 @@ class SSPaypalBasic extends DataExtension
      */
     public static function cartId()
     {
-        self::$_cartID++;
+        return self::$_cartID++;
     }
     /**
      * @param array $payPalApi details

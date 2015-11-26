@@ -33,18 +33,21 @@ $(document).ready(function () {
         alert("Sorry not complete yet.");
     });
 
-
+    checkCart();
 });
 
 //bind to non existing class
 $(document.body).on('click', '.cartRemove', function () {
     //get product item
-    var item_id = $(this).data('item_id');
-    //@todo remove to a proper function this is visual prototyping at this stage
-    $("#" + item_id).remove();
+    var item_code = $(this).data('item_code');
 
-    if ($('tr', $shoppingCart).length <= 1)   //hide shopping cart no items
-        $(".shoppingCartContainer").hide();
+    $("#" + item_code).remove();
+
+
+    delete(cartItems[item_code]);
+
+    console.log("item_code",cartItems);
+    saveCart();
 });
 
 function addToCart() {
@@ -63,39 +66,15 @@ function addToCart() {
     }
 
     //check if we don't already exist
-    if (typeof cartItems[data.name] == "undefined")
-    cartItems[data.name] = data;
+    if (typeof cartItems[data.code] == "undefined")
+    cartItems[data.code] = data;
     else
-        cartItems[data.name].qty++;
+        cartItems[data.code].qty++;
 
-    localStorage.setItem('cartItems',JSON.stringify(cartItems));
 
-    /*
-     <tr>
-     <td width="70px"><p style="color: #555">Dried Barberries</p></td>
-     <td width="20" style="padding-left: 10px;"><p style="color: #555;">1</p></td>
-     <td width="10" style="padding-left: 10px;"><p style="color: #555">$12.00</p></td>
-     <td width="10"><i class="fa fa-remove"></i></td>
-     </tr>
-     */
-    //append data to order this will be moved to another function
-    
-    //Remove above soon just adding by table now
+
     addRow(data);
-
-    //define our cart row
-    /*
-    var cartRow = '<tr id="' + data.item_id + '">' +
-        '<td width="70px"><p style="color: #555">' + data.name + '</p></td>' +
-        '<td width="20" style="padding-left: 10px;"><p style="color: #555;">1</p></td>' +
-        '<td width="10" style="padding-left: 10px;"><p style="color: #555">$' + data.price + '</p></td>' +
-        '<td width="10"><i data-item_id="' + data.item_id + '" class="fa fa-remove cartRemove"></i></td>' +
-        '</tr>';
-    //append to last
-    $("tr:last", $shoppingCart).after(cartRow);
-    */
-    //console.log("paypal.js click adding", data);
-    //console.log("paypal.js ordering", ordering);
+    saveCart();
 }
 
 
@@ -107,8 +86,6 @@ function addToCart() {
 function processCart(){
     var items = localStorage.getItem('cartItems');
 
-
-
     if (items != null && typeof items == "string")
         cartItems = JSON.parse(items);
         else
@@ -119,19 +96,37 @@ function processCart(){
     $.map(cartItems,addRow);
 }
 /**
- * Adds a row to the shopping cart
+ * Adds a row to the shopping cart parsed my $.map
  * @param data
  */
-function addRow(data){
-    console.log("addRow->data",data)
-    var cartRow = '<tr id="' + data.item_id + '">' +
-        '<td width="70px"><p style="color: #555">' + data.name + '</p></td>' +
-        '<td width="20" style="padding-left: 10px;"><p style="color: #555;">' + data.qty + '</p></td>' +
-        '<td width="10" style="padding-left: 10px;"><p style="color: #555">$' + data.price + '</p></td>' +
-        '<td width="10"><i data-item_id="' + data.item_id + '" class="fa fa-remove cartRemove"></i></td>' +
+function addRow(item,index){
+
+    var item_code = (item.code.length > 1) ? item.code : index;
+
+    var cartRow = '<tr id="' +item_code + '">' +
+        '<td width="70px"><p style="color: #555">' + item.name  + '</p></td>' +
+        '<td width="20" style="padding-left: 10px;"><p style="color: #555;">' + item.qty + '</p></td>' +
+        '<td width="10" style="padding-left: 10px;"><p style="color: #555">$' + item.price + '</p></td>' +
+        '<td width="10"><i data-item_code="' + item.code + '" class="fa fa-remove cartRemove"></i></td>' +
         '</tr>';
     //append to last
     $("tr:last", $shoppingCart).after(cartRow);
+}
+
+/**
+ * Saves cartItems state
+ */
+function saveCart(){
+    localStorage.setItem('cartItems',JSON.stringify(cartItems));
+    checkCart();
+}
+/**
+ * Check if cart should be showing.
+ */
+function checkCart(){
+
+    if ($('tr', $shoppingCart).length <= 1)   //hide shopping cart no items
+        $(".shoppingCartContainer").hide();
 }
 //process the cart 5
 processCart();
