@@ -1,0 +1,7 @@
+---
+Name: SSPaypalBasic
+After: framework/routes#coreroutes
+---
+Director:
+  rules:
+    'sspaypalbasic': 'SSPaypalBasicController'

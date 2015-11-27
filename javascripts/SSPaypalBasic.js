@@ -103,14 +103,25 @@ function addRow(item,index){
 
     var item_code = (item.code.length > 1) ? item.code : index;
 
+
+
     var cartRow = '<tr id="' +item_code + '">' +
         '<td width="70px"><p style="color: #555">' + item.name  + '</p></td>' +
         '<td width="20" style="padding-left: 10px;"><p style="color: #555;">' + item.qty + '</p></td>' +
         '<td width="10" style="padding-left: 10px;"><p style="color: #555">$' + item.price + '</p></td>' +
         '<td width="10"><i data-item_code="' + item.code + '" class="fa fa-remove cartRemove"></i></td>' +
         '</tr>';
+
+    var cartItemsPaypal =
+        '<input type="hidden" name="item_name['+item.code +']" value="' + item.name  + '">'+
+        '<input type="hidden" name="item_code['+item.code +']" value="'+item.code +'">'+
+        '<input type="hidden" name="item_price['+item.code +']" value="' + item.price + '">'+
+        '<input type="hidden" name="item_qty['+item.code +']" value="' + item.qty + '">';
+
     //append to last
     $("tr:last", $shoppingCart).after(cartRow);
+
+    $('#cartItemsPaypal').append(cartItemsPaypal)
 }
 
 /**

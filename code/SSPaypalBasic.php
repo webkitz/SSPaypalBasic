@@ -45,13 +45,9 @@ class SSPaypalBasic extends DataExtension
         return "<span class='addToCart' data-qty='1' data-code='$code' data-price='$price' data-name='$name'>$qntySpan $button</span>";
     }
 
-    /**
-     * @param array $cartItem Remove item from cart
-     */
-    public static function removeCart($cartItem = array()){}
 
     /**
-     * @param array $cartItem | Emptyies cart
+     * @param array $cartItem | Empties cart
      */
     public static function emptyCart($cartItem = array()){}
 
@@ -59,5 +55,24 @@ class SSPaypalBasic extends DataExtension
     {
         Requirements::javascript('SSPaypalBasic/javascripts/SSPaypalBasic.js?1');
     }
+
+}
+
+class SSPaypalBasicController extends Controller
+{
+    static $allowed_actions = array(
+        'checkout'
+    );
+
+    public function index()
+    {
+
+    }
+
+    public function checkout()
+    {
+        echo "checkout";exit;
+    }
+
 
 }
