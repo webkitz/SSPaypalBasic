@@ -58,6 +58,8 @@ function addToCart() {
 
     //lets get the data
     var data = $(this).data();
+    var qnty = parseInt($('.sslModuleQty',$(this).parent()).val());
+    data.qty = qnty;
 
     //check the data
     if (typeof data.name != "string" || typeof data.price != "string") {
@@ -69,7 +71,7 @@ function addToCart() {
     if (typeof cartItems[data.code] == "undefined")
     cartItems[data.code] = data;
     else
-        cartItems[data.code].qty++;
+        cartItems[data.code].qty =  parseInt(cartItems[data.code].qty) + parseInt(data.qty);
 
 
 
@@ -111,12 +113,19 @@ function addRow(item,index){
         '<td width="10" style="padding-left: 10px;"><p style="color: #555">$' + item.price + '</p></td>' +
         '<td width="10"><i data-item_code="' + item.code + '" class="fa fa-remove cartRemove"></i></td>' +
         '</tr>';
-
+    /*
+     <input type="hidden" name="cmd" value="_cart">
+     <input type="hidden" name="business" value="seller@designerfotos.com">
+     <input type="hidden" name="item_name" value="hat">
+     <input type="hidden" name="item_number" value="123">
+     <input type="hidden" name="amount" value="15.00">
+     */
     var cartItemsPaypal =
-        '<input type="hidden" name="item_name['+item.code +']" value="' + item.name  + '">'+
-        '<input type="hidden" name="item_code['+item.code +']" value="'+item.code +'">'+
-        '<input type="hidden" name="item_price['+item.code +']" value="' + item.price + '">'+
-        '<input type="hidden" name="item_qty['+item.code +']" value="' + item.qty + '">';
+        //'<input type="hidden" name="cmd" value="_cart">'+
+        '<input type="hidden" name="item_name_'+item.code +'" value="' + item.name  + '">'+
+        '<input type="hidden" name="item_number_'+item.code +'" value="'+item.code +'">'+
+        '<input type="hidden" name="amount_'+item.code +'" value="' + item.price + '">'+
+        '<input type="hidden" name="quantity_'+item.code +'" value="' + item.qty + '">';
 
     //append to last
     $("tr:last", $shoppingCart).after(cartRow);
