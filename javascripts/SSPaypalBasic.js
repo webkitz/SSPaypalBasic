@@ -33,7 +33,9 @@ $(document).ready(function () {
         alert("Sorry not complete yet.");
     });
 
+    processCart();
     checkCart();
+
 });
 
 //bind to non existing class
@@ -48,6 +50,9 @@ $(document.body).on('click', '.cartRemove', function () {
 
     console.log("item_code",cartItems);
     saveCart();
+    //process the cart 5
+    processCart();
+
 });
 
 function addToCart() {
@@ -75,8 +80,11 @@ function addToCart() {
 
 
 
-    addRow(data);
+    //addRow(data);
     saveCart();
+    //close cart
+    window.location.href=window.location.href
+    //processCart();
 }
 
 
@@ -86,6 +94,7 @@ function addToCart() {
  * Process Shopping Cart from Storage
  */
 function processCart(){
+    $shoppingCart.find(".item-list").remove();
     var items = localStorage.getItem('cartItems');
 
     if (items != null && typeof items == "string")
@@ -107,7 +116,7 @@ function addRow(item,index){
 
 
 
-    var cartRow = '<tr id="' +item_code + '">' +
+    var cartRow = '<tr id="' +item_code + '" class="item-list">' +
         '<td width="70px"><p style="color: #555">' + item.name  + '</p></td>' +
         '<td width="20" style="padding-left: 10px;"><p style="color: #555;">' + item.qty + '</p></td>' +
         '<td width="10" style="padding-left: 10px;"><p style="color: #555">$' + item.price + '</p></td>' +
@@ -148,7 +157,5 @@ function checkCart(){
     if ($('tr', $shoppingCart).length <= 1)   //hide shopping cart no items
         $(".shoppingCartContainer").hide();
 }
-//process the cart 5
-processCart();
 
 
