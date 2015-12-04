@@ -54,6 +54,7 @@ class SSPaypalBasic extends DataExtension
     public function contentcontrollerInit()
     {
         Requirements::javascript('SSPaypalBasic/javascripts/SSPaypalBasic.js?1');
+        //Requirements::javascript('SSPaypalBasic/javascripts/simpleCart.js');
     }
 
 }

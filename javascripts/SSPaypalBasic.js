@@ -186,7 +186,8 @@ function checkOut(){
         data["amount_" + item.code] = (item.price * 1).toFixed(2);
         data["item_number_" + item.code] = item.code;
 
-        $form.append(createInput(data));
+        $form.append(createHiddenInput(data));
+        $form.append(createHiddenInput(Settings));
         /*
         form.append(
             $input.attr("type","hidden").attr("name",name).val(val)
@@ -198,13 +199,15 @@ function checkOut(){
     $form.el.submit();
 }
 
-function createInput(data){
-    var emptyObj = null;
+function createHiddenInput(data){
+    var emptyObj = $('div');
     $.each(data,function(item,val){
         console.log("adding item");
         var $input = $('<input>');
 
-        emptyObj+= $($input.attr("type","hidden").attr("name",item).val(val)).html();
+        emptyObj.append(
+            $input.attr("type","hidden").attr("name",item).val(val)
+        );
 
     });
 
