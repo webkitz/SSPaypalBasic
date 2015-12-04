@@ -29,11 +29,11 @@ $(document).ready(function () {
     //adding item to cart
     $(".addToCart").click(addToCart)
 
-    $("#checkOut").click(function () {
-        alert("Sorry not complete yet.");
-    });
+    $("#checkOut").click(checkOut);
 
+    processCart();
     checkCart();
+
 });
 
 //bind to non existing class
@@ -48,6 +48,9 @@ $(document.body).on('click', '.cartRemove', function () {
 
     console.log("item_code",cartItems);
     saveCart();
+    //process the cart 5
+    processCart();
+
 });
 
 function addToCart() {
@@ -58,6 +61,8 @@ function addToCart() {
 
     //lets get the data
     var data = $(this).data();
+    var qnty = parseInt($('.sslModuleQty',$(this).parent()).val());
+    data.qty = qnty;
 
     //check the data
     if (typeof data.name != "string" || typeof data.price != "string") {
@@ -69,12 +74,15 @@ function addToCart() {
     if (typeof cartItems[data.code] == "undefined")
     cartItems[data.code] = data;
     else
-        cartItems[data.code].qty++;
+        cartItems[data.code].qty =  parseInt(cartItems[data.code].qty) + parseInt(data.qty);
 
 
 
-    addRow(data);
+    //addRow(data);
     saveCart();
+    //close cart
+    window.location.href=window.location.href
+    //processCart();
 }
 
 
@@ -84,6 +92,7 @@ function addToCart() {
  * Process Shopping Cart from Storage
  */
 function processCart(){
+    $shoppingCart.find(".item-list").remove();
     var items = localStorage.getItem('cartItems');
 
     if (items != null && typeof items == "string")
@@ -103,14 +112,21 @@ function addRow(item,index){
 
     var item_code = (item.code.length > 1) ? item.code : index;
 
-    var cartRow = '<tr id="' +item_code + '">' +
+
+
+    var cartRow = '<tr id="' +item_code + '" class="item-list">' +
         '<td width="70px"><p style="color: #555">' + item.name  + '</p></td>' +
         '<td width="20" style="padding-left: 10px;"><p style="color: #555;">' + item.qty + '</p></td>' +
         '<td width="10" style="padding-left: 10px;"><p style="color: #555">$' + item.price + '</p></td>' +
         '<td width="10"><i data-item_code="' + item.code + '" class="fa fa-remove cartRemove"></i></td>' +
         '</tr>';
+    /*
+     @see to checkOut
+     */
     //append to last
     $("tr:last", $shoppingCart).after(cartRow);
+
+
 }
 
 /**
@@ -128,7 +144,61 @@ function checkCart(){
     if ($('tr', $shoppingCart).length <= 1)   //hide shopping cart no items
         $(".shoppingCartContainer").hide();
 }
-//process the cart 5
-processCart();
 
+function checkOut(){
+    var Settings = {
+            cmd			: "_cart"
+            , upload		: "1"
+            , currency_code : 'NZD'
+            , business		: 'luke@hardiman.co.nz'
+            , rm			: 2//"GET" ? "0" : "2"
+            , tax_cart		: (0*1).toFixed(2)
+            , handling_cart : (0*1).toFixed(2)
+            , charset		: "utf-8"
+        };
 
+    console.log("testing checkOut")
+    var $form = $("<form></form>");
+
+    $form.attr('style', 'display:none;');
+    $form.attr('action', 'https://sandbox.paypal.com/cgi-bin/webscr');
+    $form.attr('method', 'POST');
+
+    var counter = 1;
+    $.each(cartItems, function (index, item) {
+      //name: "Chargrilled Eggplant Dip", price: "12.00", code: 5, qty: 1}
+
+        console.log("item",item)
+        var data = {};
+
+        data["item_name_" + counter] = item.name;
+
+        data["quantity_" + counter] = item.qty;
+        data["amount_" + counter] = (item.price * 1).toFixed(2);
+        data["item_number_" +counter] = item.code;
+
+        $form.append(createHiddenInput(data));
+
+        counter++;
+    });
+    $form.append(createHiddenInput(Settings));
+    console.log("form",$form.html())
+    //$shoppingCart.append(form);
+    $("body").append($form);
+    $form.submit();
+}
+
+function createHiddenInput(data){
+    var emptyObj = $('<div>');
+    $.each(data,function(item,val){
+        console.log("adding item");
+        var $input = $('<input>');
+
+        emptyObj.append(
+            $input.attr("type","hidden").attr("name",item).val(val)
+        );
+
+    });
+
+    return emptyObj;
+}
