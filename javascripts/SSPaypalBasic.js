@@ -29,9 +29,7 @@ $(document).ready(function () {
     //adding item to cart
     $(".addToCart").click(addToCart)
 
-    $("#checkOut").click(function () {
-        alert("Sorry not complete yet.");
-    });
+    $("#checkOut").click(checkOut);
 
     processCart();
     checkCart();
@@ -158,4 +156,57 @@ function checkCart(){
         $(".shoppingCartContainer").hide();
 }
 
+function checkOut(){
+    var Settings = {
+            cmd			: "_cart"
+            , upload		: "1"
+            , currency_code : 'NZD'
+            , business		: 'luke@hardiman.co.nz'
+            , rm			: 2//"GET" ? "0" : "2"
+            , tax_cart		: (0*1).toFixed(2)
+            , handling_cart : (0*1).toFixed(2)
+            , charset		: "utf-8"
+        };
 
+    console.log("testing checkOut")
+    var $form = $("<form></form>");
+
+    $form.attr('style', 'display:none;');
+    $form.attr('action', 'https://www.sandbox.paypal.com/cgi-bin/webscr');
+    $form.attr('method', 'POST');
+    $.each(cartItems, function (index, item) {
+      //name: "Chargrilled Eggplant Dip", price: "12.00", code: 5, qty: 1}
+
+        console.log("item",item)
+        var data = {};
+
+        data["item_name_" + item.code] = item.name;
+
+        data["quantity_" + item.code] = item.qty;
+        data["amount_" + item.code] = (item.price * 1).toFixed(2);
+        data["item_number_" + item.code] = item.code;
+
+        $form.append(createInput(data));
+        /*
+        form.append(
+            $input.attr("type","hidden").attr("name",name).val(val)
+        );*/
+    });
+    console.log("form",$form.html())
+    //$shoppingCart.append(form);
+    $("body").append($form);
+    $form.el.submit();
+}
+
+function createInput(data){
+    var emptyObj = null;
+    $.each(data,function(item,val){
+        console.log("adding item");
+        var $input = $('<input>');
+
+        emptyObj+= $($input.attr("type","hidden").attr("name",item).val(val)).html();
+
+    });
+
+    return emptyObj;
+}
