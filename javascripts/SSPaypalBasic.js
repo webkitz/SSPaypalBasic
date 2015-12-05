@@ -2,17 +2,26 @@
  * Created by Luke Hardiman on 20/09/2015.
  *
  */
-console.log("paypal.js : loading ");
-
-
-
 if (typeof jQuery == 'undefined') {
-    throw exception("jQuery not loaded");
+    throw exception("SSPaypalBasic.js jQuery not loaded");
 }
+console.log("SSPaypalBasic.js : loaded ");
+
+var Settings = {
+    cmd			: "_cart"
+    , upload		: "1"
+    , currency_code : 'NZD'
+    , business		: 'luke@hardiman.co.nz'
+    , rm			: 2
+    , tax_cart		: 0//(0*1).toFixed(2)
+    , handling_cart : 0//(0*1).toFixed(2)
+    , charset		: "utf-8"
+};
 
 var  $shoppingCart = null;
-
 var cartItems = {};
+
+
 
 $(document).ready(function () {
 
@@ -61,7 +70,7 @@ function addToCart() {
 
     //lets get the data
     var data = $(this).data();
-    var qnty = parseInt($('.sslModuleQty',$(this).parent()).val());
+    var qnty = parseInt($('.sslModuleQty').val());
     data.qty = qnty;
 
     //check the data
@@ -72,9 +81,9 @@ function addToCart() {
 
     //check if we don't already exist
     if (typeof cartItems[data.code] == "undefined")
-    cartItems[data.code] = data;
+    cartItems[data.name] = data;
     else
-        cartItems[data.code].qty =  parseInt(cartItems[data.code].qty) + parseInt(data.qty);
+        cartItems[data.name].qty =  parseInt(cartItems[data.code].qty) + parseInt(data.qty);
 
 
 
@@ -145,19 +154,10 @@ function checkCart(){
         $(".shoppingCartContainer").hide();
 }
 
+/**
+ * CheckOut Creates the form
+ */
 function checkOut(){
-    var Settings = {
-            cmd			: "_cart"
-            , upload		: "1"
-            , currency_code : 'NZD'
-            , business		: 'luke@hardiman.co.nz'
-            , rm			: 2//"GET" ? "0" : "2"
-            , tax_cart		: (0*1).toFixed(2)
-            , handling_cart : (0*1).toFixed(2)
-            , charset		: "utf-8"
-        };
-
-    console.log("testing checkOut")
     var $form = $("<form></form>");
 
     $form.attr('style', 'display:none;');
@@ -175,14 +175,14 @@ function checkOut(){
 
         data["quantity_" + counter] = item.qty;
         data["amount_" + counter] = (item.price * 1).toFixed(2);
-        data["item_number_" +counter] = item.code;
+        data["item_number_" +counter++] = item.code;
 
         $form.append(createHiddenInput(data));
 
-        counter++;
+       // counter++;
     });
     $form.append(createHiddenInput(Settings));
-    console.log("form",$form.html())
+    console.log("form",$form.html());
     //$shoppingCart.append(form);
     $("body").append($form);
     $form.submit();

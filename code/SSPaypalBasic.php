@@ -62,65 +62,25 @@ class SSPaypalBasic extends DataExtension
 class SSPaypalBasicController extends Controller
 {
     static $allowed_actions = array(
-        'checkout'
+        'checkout','thankyou'
     );
 
     public function index()
     {
 
     }
+    public function thankyou(){
+        echo "Thank you we will be in touch soon!";
+        echo "<script>localStorage.clear();location.href='../products';</script>";
+    }
 
     public function checkout()
     {
+        /**
+         * All we are doing is checking over pricing
+         */
         if($_POST) //Post Data received from product list page.
         {
-            $ShippinCost        = 3.00; //Although you may change the value later, try to pass in a shipping amount that is reasonably accurate.
-
-            //we need 4 variables from an item, Item Name, Item Price, Item Number and Item Quantity.
-            $paypal_data = '';
-            $ItemTotalPrice = 0;
-
-            //loop through POST array
-            foreach($_POST['item_name'] as $key=>$itmname)
-            {
-                //get actual product price from database using product code
-                $product_code    = filter_var($_POST['item_code'][$key], FILTER_SANITIZE_STRING);
-                //retrive the actual price from dbase as this will be bad if user has access
-                //$results = $mysqli->query("SELECT price FROM products WHERE product_code='$product_code' LIMIT 1");
-                //$obj = $results->fetch_object();
-                $item_price = $_POST['item_price'][$key];
-                $paypal_data .= '&L_PAYMENTREQUEST_0_NAME'.$key.'='.urlencode($_POST['item_name'][$key]);
-                $paypal_data .= '&L_PAYMENTREQUEST_0_NUMBER'.$key.'='.urlencode($_POST['item_code'][$key]);
-                $paypal_data .= '&L_PAYMENTREQUEST_0_AMT'.$key.'='.urlencode($item_price);
-                $paypal_data .= '&L_PAYMENTREQUEST_0_QTY'.$key.'='. urlencode($_POST['item_qty'][$key]);
-
-                // item price X quantity
-                $subtotal = ($item_price * $_POST['item_qty'][$key]);
-
-                //total price
-                $ItemTotalPrice = ($ItemTotalPrice + $subtotal);
-            }
-
-            //parameters for SetExpressCheckout
-            $padata =   '&METHOD=SetExpressCheckout'.
-                '&RETURNURL='.urlencode($PayPalReturnURL ).
-                '&CANCELURL='.urlencode($PayPalCancelURL).
-                '&PAYMENTREQUEST_0_PAYMENTACTION='.urlencode("SALE").
-                $paypal_data.
-                '&NOSHIPPING=0'. //set 1 to hide buyer's shipping address
-                '&PAYMENTREQUEST_0_ITEMAMT='.urlencode($ItemTotalPrice).
-                //'&PAYMENTREQUEST_0_TAXAMT='.urlencode($TotalTaxAmount).
-                '&PAYMENTREQUEST_0_SHIPPINGAMT='.urlencode($ShippinCost).
-                //'&PAYMENTREQUEST_0_HANDLINGAMT='.urlencode($HandalingCost).
-                //'&PAYMENTREQUEST_0_SHIPDISCAMT='.urlencode($ShippinDiscount).
-                //'&PAYMENTREQUEST_0_INSURANCEAMT='.urlencode($InsuranceCost).
-                '&PAYMENTREQUEST_0_AMT='.urlencode($ItemTotalPrice).
-                '&PAYMENTREQUEST_0_CURRENCYCODE='.urlencode('NZ').
-                '&LOCALECODE=GB'. //PayPal pages to match the language on your website.
-                '&LOGOIMG=http://persianfeast.co.nz/index.php/themes/persian-feast/images/logos/logo_main_orange_line.png'. //site logo
-                '&CARTBORDERCOLOR=FFFFFF'. //border color of cart
-                '&ALLOWNOTE=1';
-
 
         }
     }
