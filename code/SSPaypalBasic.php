@@ -69,7 +69,7 @@ class SSPaypalBasicController extends Controller
     {
 
     }
-    public function thankyou(){
+    public function thankyou($data){
         echo "Thank you we will be in touch soon!";
         echo "<script>localStorage.clear();location.href='../products';</script>";
     }

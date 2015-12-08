@@ -47,6 +47,7 @@ $(document).ready(function () {
 
 //bind to non existing class
 $(document.body).on('click', '.cartRemove', function () {
+    console.log("cartRemove Clicked")
     //get product item
     var item_code = $(this).data('item_code');
 
@@ -70,6 +71,7 @@ function addToCart() {
 
     //lets get the data
     var data = $(this).data();
+    console.log("addToCart data",data)
     var qnty = parseInt($('.sslModuleQty').val());
     data.qty = qnty;
 
@@ -90,7 +92,7 @@ function addToCart() {
     //addRow(data);
     saveCart();
     //close cart
-    window.location.href=window.location.href
+    //window.location.href=window.location.href
     //processCart();
 }
 
