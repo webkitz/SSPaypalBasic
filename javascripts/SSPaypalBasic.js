@@ -50,7 +50,7 @@ $(document.body).on('click', '.cartRemove', function () {
     console.log("cartRemove Clicked")
     //get product item
     var item_code = $(this).data('item_code');
-
+    console.log("item_code",item_code)
     $("#" + item_code).remove();
 
 
@@ -64,6 +64,7 @@ $(document.body).on('click', '.cartRemove', function () {
 });
 
 function addToCart() {
+    var $self = $(this);
     console.log("addToCart clicked")
     //check if showing
     if (!$shoppingCart.is(':visible'))
@@ -72,7 +73,9 @@ function addToCart() {
     //lets get the data
     var data = $(this).data();
     console.log("addToCart data",data)
-    var qnty = parseInt($('.sslModuleQty').val());
+    console.log("addToCart this",$self.parent().html())
+    var qnty = parseInt($('.sslModuleQty',$self.parent()).val());
+    console.log("addToCart qnty",qnty)
     data.qty = qnty;
 
     //check the data
@@ -115,6 +118,7 @@ function processCart(){
     //loop items
     $.map(cartItems,addRow);
 }
+
 /**
  * Adds a row to the shopping cart parsed my $.map
  * @param data
@@ -129,7 +133,7 @@ function addRow(item,index){
         '<td width="70px"><p style="color: #555">' + item.name  + '</p></td>' +
         '<td width="20" style="padding-left: 10px;"><p style="color: #555;">' + item.qty + '</p></td>' +
         '<td width="10" style="padding-left: 10px;"><p style="color: #555">$' + item.price + '</p></td>' +
-        '<td width="10"><i data-item_code="' + item.code + '" class="fa fa-remove cartRemove"></i></td>' +
+        '<td width="10"><i data-item_code="' + item_code + '" class="fa fa-remove cartRemove"></i></td>' +
         '</tr>';
     /*
      @see to checkOut
