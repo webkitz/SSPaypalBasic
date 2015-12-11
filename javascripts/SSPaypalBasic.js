@@ -94,8 +94,7 @@ function addToCart() {
 
     //addRow(data);
     saveCart();
-    //close cart
-    //window.location.href=window.location.href
+    window.location.href=window.location.href
     //processCart();
 }
 
@@ -117,9 +116,7 @@ function processCart(){
     console.log("Loaded cartItems from storage",cartItems)
     //loop items
     $.map(cartItems,addRow);
-
-   var itemTotal = calculateTotal();
-    console.log("currentTotal",itemTotal)
+    $("#cartItemsPaypalTotal").text(calculateTotal());
     checkCart();
 }
 
@@ -133,7 +130,7 @@ function calculateTotal(){
             currentTotal = currentTotal + parseFloat(item.price) * parseInt(item.qty)
         });
 
-    return currentTotal;
+    return currentTotal.toFixed(2);
 }
 
 /**
