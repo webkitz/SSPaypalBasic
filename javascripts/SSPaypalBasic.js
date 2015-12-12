@@ -2,17 +2,26 @@
  * Created by Luke Hardiman on 20/09/2015.
  *
  */
-console.log("paypal.js : loading ");
-
-
-
 if (typeof jQuery == 'undefined') {
-    throw exception("jQuery not loaded");
+    throw exception("SSPaypalBasic.js jQuery not loaded");
 }
+console.log("SSPaypalBasic.js : loaded ");
+
+var Settings = {
+    cmd			: "_cart"
+    , upload		: "1"
+    , currency_code : 'NZD'
+    , business		: 'luke@hardiman.co.nz'
+    , rm			: 2
+    , tax_cart		: 0//(0*1).toFixed(2)
+    , handling_cart : 0//(0*1).toFixed(2)
+    , charset		: "utf-8"
+};
 
 var  $shoppingCart = null;
-
 var cartItems = {};
+
+
 
 $(document).ready(function () {
 
@@ -38,9 +47,10 @@ $(document).ready(function () {
 
 //bind to non existing class
 $(document.body).on('click', '.cartRemove', function () {
+    console.log("cartRemove Clicked")
     //get product item
     var item_code = $(this).data('item_code');
-
+    console.log("item_code",item_code)
     $("#" + item_code).remove();
 
 
@@ -54,6 +64,7 @@ $(document.body).on('click', '.cartRemove', function () {
 });
 
 function addToCart() {
+    var $self = $(this);
     console.log("addToCart clicked")
     //check if showing
     if (!$shoppingCart.is(':visible'))
@@ -61,7 +72,10 @@ function addToCart() {
 
     //lets get the data
     var data = $(this).data();
-    var qnty = parseInt($('.sslModuleQty',$(this).parent()).val());
+    console.log("addToCart data",data)
+    console.log("addToCart this",$self.parent().html())
+    var qnty = parseInt($('.sslModuleQty',$self.parent()).val());
+    console.log("addToCart qnty",qnty)
     data.qty = qnty;
 
     //check the data
@@ -72,16 +86,16 @@ function addToCart() {
 
     //check if we don't already exist
     if (typeof cartItems[data.code] == "undefined")
-    cartItems[data.code] = data;
+    cartItems[data.name] = data;
     else
-        cartItems[data.code].qty =  parseInt(cartItems[data.code].qty) + parseInt(data.qty);
+        cartItems[data.name].qty =  parseInt(cartItems[data.code].qty) + parseInt(data.qty);
 
 
 
     //addRow(data);
     saveCart();
     //close cart
-    window.location.href=window.location.href
+    //window.location.href=window.location.href
     //processCart();
 }
 
@@ -104,6 +118,7 @@ function processCart(){
     //loop items
     $.map(cartItems,addRow);
 }
+
 /**
  * Adds a row to the shopping cart parsed my $.map
  * @param data
@@ -118,7 +133,7 @@ function addRow(item,index){
         '<td width="70px"><p style="color: #555">' + item.name  + '</p></td>' +
         '<td width="20" style="padding-left: 10px;"><p style="color: #555;">' + item.qty + '</p></td>' +
         '<td width="10" style="padding-left: 10px;"><p style="color: #555">$' + item.price + '</p></td>' +
-        '<td width="10"><i data-item_code="' + item.code + '" class="fa fa-remove cartRemove"></i></td>' +
+        '<td width="10"><i data-item_code="' + item_code + '" class="fa fa-remove cartRemove"></i></td>' +
         '</tr>';
     /*
      @see to checkOut
@@ -145,19 +160,10 @@ function checkCart(){
         $(".shoppingCartContainer").hide();
 }
 
+/**
+ * CheckOut Creates the form
+ */
 function checkOut(){
-    var Settings = {
-            cmd			: "_cart"
-            , upload		: "1"
-            , currency_code : 'NZD'
-            , business		: 'luke@hardiman.co.nz'
-            , rm			: 2//"GET" ? "0" : "2"
-            , tax_cart		: (0*1).toFixed(2)
-            , handling_cart : (0*1).toFixed(2)
-            , charset		: "utf-8"
-        };
-
-    console.log("testing checkOut")
     var $form = $("<form></form>");
 
     $form.attr('style', 'display:none;');
@@ -175,14 +181,14 @@ function checkOut(){
 
         data["quantity_" + counter] = item.qty;
         data["amount_" + counter] = (item.price * 1).toFixed(2);
-        data["item_number_" +counter] = item.code;
+        data["item_number_" +counter++] = item.code;
 
         $form.append(createHiddenInput(data));
 
-        counter++;
+       // counter++;
     });
     $form.append(createHiddenInput(Settings));
-    console.log("form",$form.html())
+    console.log("form",$form.html());
     //$shoppingCart.append(form);
     $("body").append($form);
     $form.submit();
