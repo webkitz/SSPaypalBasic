@@ -73,7 +73,7 @@ function addToCart() {
     //lets get the data
     var data = $(this).data();
     console.log("addToCart data",data)
-    console.log("addToCart this",$self.parent().html())
+
     var qnty = parseInt($('.sslModuleQty',$self.parent()).val());
     console.log("addToCart qnty",qnty)
     data.qty = qnty;
@@ -94,8 +94,7 @@ function addToCart() {
 
     //addRow(data);
     saveCart();
-    //close cart
-    //window.location.href=window.location.href
+    window.location.href=window.location.href
     //processCart();
 }
 
@@ -117,6 +116,21 @@ function processCart(){
     console.log("Loaded cartItems from storage",cartItems)
     //loop items
     $.map(cartItems,addRow);
+    $("#cartItemsPaypalTotal").text(calculateTotal());
+    checkCart();
+}
+
+/**
+ * Returns a total of the current cart
+ */
+function calculateTotal(){
+    var currentTotal = 0;
+
+        $.each(cartItems,function(itemName,item){
+            currentTotal = currentTotal + parseFloat(item.price) * parseInt(item.qty)
+        });
+
+    return currentTotal.toFixed(2);
 }
 
 /**
