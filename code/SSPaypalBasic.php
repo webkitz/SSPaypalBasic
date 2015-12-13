@@ -81,7 +81,10 @@ class SSPaypalBasicController extends Controller
          */
         if($_POST) //Post Data received from product list page.
         {
-
+            $dump = print_r($_POST,true);
+            $fh = fopen("dump.txt","a");
+            fwrite($fh,($dump."\r\n")); // add newline for next time
+            fclose($fh);
         }
     }
 
