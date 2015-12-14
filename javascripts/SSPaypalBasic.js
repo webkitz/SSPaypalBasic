@@ -2,9 +2,9 @@
  * Created by Luke Hardiman on 20/09/2015.
  *
  */
-if (typeof jQuery == 'undefined') {
+if (typeof jQuery == 'undefined')
     throw exception("SSPaypalBasic.js jQuery not loaded");
-}
+
 console.log("SSPaypalBasic.js : loaded ");
 
 var Settings = {
@@ -16,6 +16,7 @@ var Settings = {
     , tax_cart		: 0//(0*1).toFixed(2)
     , handling_cart : 0//(0*1).toFixed(2)
     , charset		: "utf-8"
+    , notify_url    : 'http://persianfeast.nzhost.me/sspaypalbasic/checkout'
 };
 
 var  $shoppingCart = null;
@@ -33,10 +34,10 @@ $(document).ready(function () {
         throw new Error("paypal.js Error missing shopping cart container");
 
     if (!$shoppingCart.is(':visible'))
-        console.log("paypal.js cart is hidden")
+        console.log("paypal.js cart is hidden");
 
     //adding item to cart
-    $(".addToCart").click(addToCart)
+    $(".addToCart").click(addToCart);
 
     $("#checkOut").click(checkOut);
 
@@ -47,10 +48,10 @@ $(document).ready(function () {
 
 //bind to non existing class
 $(document.body).on('click', '.cartRemove', function () {
-    console.log("cartRemove Clicked")
+    console.log("cartRemove Clicked");
     //get product item
     var item_code = $(this).data('item_code');
-    console.log("item_code",item_code)
+    console.log("item_code",item_code);
     $("#" + item_code).remove();
 
 
@@ -201,6 +202,7 @@ function checkOut(){
 
        // counter++;
     });
+    //append our settings
     $form.append(createHiddenInput(Settings));
     console.log("form",$form.html());
     //$shoppingCart.append(form);
