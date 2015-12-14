@@ -16,7 +16,7 @@ var Settings = {
     , tax_cart		: 0//(0*1).toFixed(2)
     , handling_cart : 0//(0*1).toFixed(2)
     , charset		: "utf-8"
-    , notify_url    : 'http://persianfeast.nzhost.me/PersianFeast/sspaypalbasic/checkout'
+    , notify_url    : 'http://persianfeast.nzhost.me/sspaypalbasic/checkout'
 };
 
 var  $shoppingCart = null;
@@ -202,6 +202,7 @@ function checkOut(){
 
        // counter++;
     });
+    //append our settings
     $form.append(createHiddenInput(Settings));
     console.log("form",$form.html());
     //$shoppingCart.append(form);
