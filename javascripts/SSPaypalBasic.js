@@ -6,7 +6,6 @@ if (typeof jQuery == 'undefined')
     throw exception("SSPaypalBasic.js jQuery not loaded");
 
 console.log("SSPaypalBasic.js : loaded ");
-
 var Settings = {
     cmd			: "_cart"
     , upload		: "1"
@@ -16,7 +15,10 @@ var Settings = {
     , tax_cart		: 0//(0*1).toFixed(2)
     , handling_cart : 0//(0*1).toFixed(2)
     , charset		: "utf-8"
-    , notify_url    : 'http://persianfeast.nzhost.me/sspaypalbasic/checkout'
+    , notify_url    : 'http://persianfeast.nzhost.me/ipn/index.php'
+    , return     : 'http://persianfeast.nzhost.me/SSPaypalBasic/thankyou'
+    , cbt        : 'Return to the Store'
+    , cancel_return : 'http://persianfeast.nzhost.me/SSPaypalBasic/canceled'
 };
 
 var  $shoppingCart = null;
